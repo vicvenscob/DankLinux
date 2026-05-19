@@ -33,7 +33,7 @@ ask()     { echo -e -n "  ${LAVENDER}  ${TEXT}$1 ${OVERLAY0}» ${RESET}"; }
 confirm() {
   ask "$1 [y/N]"
   read -r ans
-  [[ "$ans" =~ ^[Yy]$ ]]
+  case "$ans" in [Yy]) return 0 ;; *) return 1 ;; esac
 }
 
 # run a command as the target user
@@ -41,7 +41,7 @@ as_user() { runuser -l "$DL_USER" -c "$*"; }
 
 # write a file owned by the target user
 user_file() {
-  local path="$1"; shift
+  local path="$1"
   local dir; dir=$(dirname "$path")
   mkdir -p "$dir"
   cat > "$path"
